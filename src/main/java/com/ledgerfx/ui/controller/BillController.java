@@ -5,6 +5,7 @@ import com.ledgerfx.domain.Bill;
 import com.ledgerfx.domain.User;
 import com.ledgerfx.service.BillService;
 import com.ledgerfx.ui.StageManager;
+import com.ledgerfx.ui.base.BaseController;
 import com.ledgerfx.ui.enums.FxmlView;
 import jakarta.annotation.Resource;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public class BillController {
+public class BillController extends BaseController {
 
     @FXML
     private ComboBox<String> categoryComboBox;
@@ -75,7 +76,7 @@ public class BillController {
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         timeCol.setCellValueFactory(cell -> new SimpleStringProperty(
-                cell.getValue().getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                cell.getValue().getBillTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         ));
 
         billTable.setRowFactory(tv -> {
@@ -93,10 +94,10 @@ public class BillController {
     @FXML
     public void handleExit() {
         // 弹出确认框
-        if (StageManager.showConfirm("您确定要退出应用吗？")) {
+        if (confirm("您确定要退出应用吗？")) {
             // 清理全局用户信息
             userContext.clear();
-            StageManager.getPrimaryStage().close();
+            close();
         }
     }
 
@@ -131,15 +132,15 @@ public class BillController {
         String note = noteField.getText();
 
         if (!StringUtils.hasLength(category)) {
-            StageManager.showError("请选择分类");
+            error("请选择分类");
             return;
         }
         if (!StringUtils.hasLength(amountStr)) {
-            StageManager.showError("请填入金额");
+            error("请填入金额");
             return;
         }
         if (!StringUtils.hasLength(typeStr)) {
-            StageManager.showError("请选择类型");
+            error("请选择类型");
             return;
         }
 
@@ -156,21 +157,21 @@ public class BillController {
             bill.setCreateTime(LocalDateTime.now());
 
             if (billService.addBill(bill)) {
-                StageManager.showInfo("账单添加成功");
+                info("账单添加成功");
                 loadBills();
                 amountField.clear();
                 noteField.clear();
             } else {
-                StageManager.showError("账单添加失败");
+                error("账单添加失败");
             }
         } catch (NumberFormatException e) {
-            StageManager.showError("金额格式不正确");
+            error("金额格式不正确");
         }
     }
 
     @FXML
     public void handleGoAnalysis() throws IOException {
-        StageManager.switchScene(FxmlView.ANALYSIS);
+        switchView(FxmlView.ANALYSIS);
     }
 
     @FXML
@@ -191,9 +192,9 @@ public class BillController {
                             b.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                     ));
                 }
-                StageManager.showInfo("账单已导出");
+                info("账单已导出");
             } catch (IOException e) {
-                StageManager.showError("导出失败");
+                error("导出失败");
             }
         }
     }

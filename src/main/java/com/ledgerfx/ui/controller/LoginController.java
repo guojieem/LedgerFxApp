@@ -1,9 +1,8 @@
 package com.ledgerfx.ui.controller;
 
 import com.ledgerfx.service.UserService;
-import com.ledgerfx.ui.StageManager;
+import com.ledgerfx.ui.base.BaseController;
 import com.ledgerfx.ui.enums.FxmlView;
-import com.ledgerfx.util.PasswordEncoder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class LoginController {
+public class LoginController extends BaseController {
 
     @FXML
     private TextField usernameField;
@@ -28,16 +27,16 @@ public class LoginController {
     public void handleLogin() {
         boolean success = userService.login(usernameField.getText(), passwordField.getText());
         if (success) {
-            StageManager.switchScene(FxmlView.BILL);
+            switchView(FxmlView.BILL);
         } else {
-            StageManager.showWarning("用户名或密码错误");
+            warn("用户名或密码错误");
         }
     }
 
     // ===================== 注册 =====================
     @FXML
     private void handleRegister() {
-        StageManager.switchScene(FxmlView.REGISTER);
+        switchView(FxmlView.REGISTER);
     }
 }
 

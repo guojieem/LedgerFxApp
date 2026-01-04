@@ -69,4 +69,8 @@ public abstract class BaseController {
     protected boolean confirm(String message) {
         return StageManager.showConfirm(message);
     }
+
+    protected void close() {
+        StageManager.getPrimaryStage().close();
+    }
 }

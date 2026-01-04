@@ -24,11 +24,11 @@
     <center>
         <TableView fx:id="billTable">
             <columns>
-                <TableColumn text="分类" fx:id="accountTypeCol"/>
-                <TableColumn text="金额" fx:id="amountCol"/>
-                <TableColumn text="类型" fx:id="typeCol"/>
-                <TableColumn text="备注" fx:id="descriptionCol"/>
-                <TableColumn text="时间" fx:id="timeCol"/>
+                <TableColumn text="分类" style="-fx-alignment: center" fx:id="accountTypeCol"/>
+                <TableColumn text="金额" style="-fx-alignment: center" fx:id="amountCol"/>
+                <TableColumn text="类型" style="-fx-alignment: center" fx:id="typeCol"/>
+                <TableColumn text="备注" style="-fx-alignment: center" fx:id="descriptionCol"/>
+                <TableColumn text="时间" style="-fx-alignment: center" fx:id="timeCol"/>
             </columns>
         </TableView>
     </center>

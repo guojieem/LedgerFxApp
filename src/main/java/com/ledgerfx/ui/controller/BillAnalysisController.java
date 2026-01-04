@@ -5,6 +5,7 @@ import com.ledgerfx.domain.Bill;
 import com.ledgerfx.domain.User;
 import com.ledgerfx.service.BillService;
 import com.ledgerfx.ui.StageManager;
+import com.ledgerfx.ui.base.BaseController;
 import com.ledgerfx.ui.enums.FxmlView;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
@@ -32,7 +33,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Component
-public class BillAnalysisController {
+public class BillAnalysisController extends BaseController {
 
     @FXML
     private DatePicker startDatePicker;

@@ -1,7 +1,7 @@
 package com.ledgerfx.ui.controller;
 
 import com.ledgerfx.service.UserService;
-import com.ledgerfx.ui.StageManager;
+import com.ledgerfx.ui.base.BaseController;
 import com.ledgerfx.ui.enums.FxmlView;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RegisterController {
+public class RegisterController extends BaseController {
 
     @FXML
     private TextField usernameField;
@@ -35,12 +35,12 @@ public class RegisterController {
         String confirm = confirmPasswordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            StageManager.showError("所有字段必须填写");
+            error("所有字段必须填写");
             return;
         }
 
         if (!password.equals(confirm)) {
-            StageManager.showError("两次密码不一致");
+            error("两次密码不一致");
             return;
         }
 
@@ -48,15 +48,15 @@ public class RegisterController {
         boolean flag = userService.register(username, password);
 
         if (flag) {
-            StageManager.showInfo("注册成功，跳转登录");
-            StageManager.switchScene(FxmlView.LOGIN);
+            info("注册成功，跳转登录");
+            switchView(FxmlView.LOGIN);
         } else {
-            StageManager.showWarning("用户名已存在");
+            warn("用户名已存在");
         }
     }
 
     @FXML
     public void handleBackToLogin() {
-        StageManager.switchScene(FxmlView.LOGIN);
+        switchView(FxmlView.LOGIN);
     }
 }
