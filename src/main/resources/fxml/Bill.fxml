@@ -9,8 +9,9 @@
 
     <top>
         <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
-            <ComboBox fx:id="categoryComboBox" promptText="分类"/>
-            <TextField fx:id="amountField" promptText="金额"/>
+            <ComboBox fx:id="categoryComboBox" promptText="分类" maxWidth="100"/>
+            <TextField fx:id="amountField" promptText="金额" maxWidth="100"/>
+            <ComboBox fx:id="typeComboBox" promptText="类型" maxWidth="100"/>
             <TextField fx:id="noteField" promptText="备注"/>
             <Button text="添加账单" onAction="#handleAddBill"/>
             <Button text="分析账单" onAction="#handleGoAnalysis"/>
@@ -23,9 +24,10 @@
     <center>
         <TableView fx:id="billTable">
             <columns>
-                <TableColumn text="分类" fx:id="categoryCol"/>
+                <TableColumn text="分类" fx:id="accountTypeCol"/>
                 <TableColumn text="金额" fx:id="amountCol"/>
-                <TableColumn text="备注" fx:id="noteCol"/>
+                <TableColumn text="类型" fx:id="typeCol"/>
+                <TableColumn text="备注" fx:id="descriptionCol"/>
                 <TableColumn text="时间" fx:id="timeCol"/>
             </columns>
         </TableView>

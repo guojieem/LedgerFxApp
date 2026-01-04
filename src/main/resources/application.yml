@@ -6,12 +6,12 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-  #sql:
-  #  init:
-  #    mode: always
-  #    platform: h2
-  #    schema-locations: classpath:db/schema.sql
-  #    data-locations: classpath:db/data.sql
+  sql:
+    init:
+      mode: always        # always 每次应用启动时都执行初始化 SQL, 脚本 never 从不执行初始化 SQL 脚本
+      platform: h2
+      schema-locations: classpath:db/schema.sql
+      #data-locations: classpath:db/data.sql
 
 mybatis-plus:
   configuration:
@@ -22,4 +22,4 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
   mapper-locations: classpath:mapper/*.xml  # Mapper XML \u6587\u4EF6\u8DEF\u5F84
-  type-aliases-package: com.ledgerfx.entity  # \u5B9E\u4F53\u7C7B\u5305\u8DEF\u5F84
+  type-aliases-package: com.ledgerfx.domain  # \u5B9E\u4F53\u7C7B\u5305\u8DEF\u5F84

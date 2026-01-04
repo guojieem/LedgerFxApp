@@ -11,17 +11,15 @@ import java.time.LocalDateTime;
 @Data
 @TableName("t_bill")
 public class Bill {
-
     @TableId(type = IdType.AUTO)
     private Long id;
-
     private Long userId;
-
-    private String category;
-
+    private String currency;
+    private String accountType;
+    private String type;
     private BigDecimal amount;
-
-    private String note;
-
+    private String description;
+    private LocalDateTime billTime;
     private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

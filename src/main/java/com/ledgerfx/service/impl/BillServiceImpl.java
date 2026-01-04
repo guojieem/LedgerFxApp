@@ -31,7 +31,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements Bi
         List<Bill> bills = getBillsByUser(userId);
         return bills.stream()
                 .collect(Collectors.groupingBy(
-                        Bill::getCategory,
+                        Bill::getAccountType,
                         Collectors.mapping(Bill::getAmount,
                                 Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))
                 ));

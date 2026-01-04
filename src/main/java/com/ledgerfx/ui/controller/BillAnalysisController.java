@@ -72,7 +72,7 @@ public class BillAnalysisController {
 
     private void loadCategoryCombo() {
         List<Bill> bills = billService.getBillsByUser(currentUser.getId());
-        Set<String> categories = bills.stream().map(Bill::getCategory).collect(Collectors.toSet());
+        Set<String> categories = bills.stream().map(Bill::getAccountType).collect(Collectors.toSet());
         categoryComboBox.getItems().setAll(categories);
     }
 
@@ -105,12 +105,12 @@ public class BillAnalysisController {
         List<Bill> filtered = bills.stream()
                 .filter(b -> (start == null || !b.getCreateTime().toLocalDate().isBefore(start)) &&
                         (end == null || !b.getCreateTime().toLocalDate().isAfter(end)) &&
-                        (category == null || category.equals(b.getCategory())))
+                        (category == null || category.equals(b.getAccountType())))
                 .collect(Collectors.toList());
 
         // 更新饼图
         Map<String, BigDecimal> categoryMap = filtered.stream()
-                .collect(Collectors.groupingBy(Bill::getCategory,
+                .collect(Collectors.groupingBy(Bill::getAccountType,
                         Collectors.mapping(Bill::getAmount,
                                 Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
         ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();

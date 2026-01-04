@@ -3,12 +3,15 @@ package com.ledgerfx.ui.controller;
 import com.ledgerfx.service.UserService;
 import com.ledgerfx.ui.StageManager;
 import com.ledgerfx.ui.enums.FxmlView;
+import com.ledgerfx.util.PasswordEncoder;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class LoginController {
 
@@ -29,6 +32,12 @@ public class LoginController {
         } else {
             StageManager.showWarning("用户名或密码错误");
         }
+    }
+
+    // ===================== 注册 =====================
+    @FXML
+    private void handleRegister() {
+        StageManager.switchScene(FxmlView.REGISTER);
     }
 }
 

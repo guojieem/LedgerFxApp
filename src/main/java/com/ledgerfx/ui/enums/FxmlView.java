@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum FxmlView {
 
     LOGIN("/fxml/Login.fxml", "登录", 400, 350),
+    REGISTER("/fxml/Register.fxml", "注册", 400, 350),
     BILL("/fxml/Bill.fxml", "账单", 900, 600),
     ANALYSIS("/fxml/BillAnalysis.fxml", "账单分析", 900, 600);
 

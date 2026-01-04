@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,7 +28,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class BillController {
@@ -35,18 +35,21 @@ public class BillController {
     @FXML
     private ComboBox<String> categoryComboBox;
     @FXML
+    private ComboBox<String> typeComboBox;
+    @FXML
     private TextField amountField;
     @FXML
     private TextField noteField;
-
     @FXML
     private TableView<Bill> billTable;
     @FXML
-    private TableColumn<Bill, String> categoryCol;
+    private TableColumn<Bill, String> accountTypeCol;
     @FXML
     private TableColumn<Bill, BigDecimal> amountCol;
     @FXML
-    private TableColumn<Bill, String> noteCol;
+    private TableColumn<Bill, String> typeCol;
+    @FXML
+    private TableColumn<Bill, String> descriptionCol;
     @FXML
     private TableColumn<Bill, String> timeCol;
     @FXML
@@ -64,11 +67,13 @@ public class BillController {
         // 登录后注入当前用户
         this.currentUser = userContext.getCurrentUser();
         loadBills();
+        loadTypeComboBox();
         loadCategoryCombo();
 
-        categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+        accountTypeCol.setCellValueFactory(new PropertyValueFactory<>("accountType"));
         amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        noteCol.setCellValueFactory(new PropertyValueFactory<>("note"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         timeCol.setCellValueFactory(cell -> new SimpleStringProperty(
                 cell.getValue().getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         ));
@@ -77,7 +82,7 @@ public class BillController {
             TableRow<Bill> row = new TableRow<>();
             row.setOnMouseClicked((MouseEvent event) -> {
                 if (!row.isEmpty()) {
-                    highlightPieChart(row.getItem().getCategory());
+                    highlightPieChart(row.getItem().getAccountType());
                 }
             });
             return row;
@@ -88,11 +93,18 @@ public class BillController {
     @FXML
     public void handleExit() {
         // 弹出确认框
-        if(StageManager.showConfirm("您确定要退出应用吗？")){
+        if (StageManager.showConfirm("您确定要退出应用吗？")) {
             // 清理全局用户信息
             userContext.clear();
             StageManager.getPrimaryStage().close();
         }
+    }
+
+    private void loadTypeComboBox() {
+        Set<String> type = new LinkedHashSet<>();
+        type.add("收入");
+        type.add("支出");
+        typeComboBox.getItems().setAll(type);
     }
 
     private void loadCategoryCombo() {
@@ -115,10 +127,19 @@ public class BillController {
     public void handleAddBill() {
         String category = categoryComboBox.getValue();
         String amountStr = amountField.getText();
+        String typeStr = typeComboBox.getValue();
         String note = noteField.getText();
 
-        if (category.isEmpty() || amountStr.isEmpty()) {
-            StageManager.showError("分类和金额不能为空");
+        if (!StringUtils.hasLength(category)) {
+            StageManager.showError("请选择分类");
+            return;
+        }
+        if (!StringUtils.hasLength(amountStr)) {
+            StageManager.showError("请填入金额");
+            return;
+        }
+        if (!StringUtils.hasLength(typeStr)) {
+            StageManager.showError("请选择类型");
             return;
         }
 
@@ -127,9 +148,11 @@ public class BillController {
 
             Bill bill = new Bill();
             bill.setUserId(currentUser.getId());
-            bill.setCategory(category);
+            bill.setAccountType(category);
             bill.setAmount(amount);
-            bill.setNote(note);
+            bill.setType(typeStr);
+            bill.setDescription(note);
+            bill.setBillTime(LocalDateTime.now());
             bill.setCreateTime(LocalDateTime.now());
 
             if (billService.addBill(bill)) {
@@ -158,12 +181,13 @@ public class BillController {
         File file = fileChooser.showSaveDialog(StageManager.getPrimaryStage());
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write("分类,金额,备注,时间\n");
+                writer.write("分类,金额,类型,备注,时间\n");
                 for (Bill b : billService.getBillsByUser(currentUser.getId())) {
-                    writer.write(String.format("%s,%s,%s,%s\n",
-                            b.getCategory(),
+                    writer.write(String.format("%s,%s,%s,%s,%s\n",
+                            b.getAccountType(),
                             b.getAmount(),
-                            b.getNote(),
+                            b.getType(),
+                            b.getDescription(),
                             b.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                     ));
                 }
