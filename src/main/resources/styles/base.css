@@ -1,0 +1,160 @@
+/* ==============================
+   LedgerFX 全局样式（统一现代风格）
+   ============================== */
+
+/* 根节点背景 */
+.root {
+    -fx-background-color: #f0f2f5;
+    -fx-font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+/* 标题 Label */
+.label.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4CAF50;
+}
+
+/* 普通 Label */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* VBox / HBox / StackPane 间距 */
+.vbox, .hbox, .stack-pane {
+    -fx-spacing: 10;
+}
+
+/* TextField / PasswordField */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #393939;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2;
+}
+
+/* 按钮基础样式 */
+.button {
+    -fx-background-color: linear-gradient(#4CAF50, #45A049);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 4,0,0,1 );
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#45A049, #4CAF50);
+}
+
+.button-warning {
+    -fx-background-color: linear-gradient(#FF9800, #FB8C00);
+}
+
+.button-warning:hover {
+    -fx-background-color: linear-gradient(#FB8C00, #FF9800);
+}
+
+.button-error {
+    -fx-background-color: linear-gradient(#F44336, #E53935);
+}
+
+.button-error:hover {
+    -fx-background-color: linear-gradient(#E53935, #F44336);
+}
+
+/* TableView 美化 */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 5;
+    -fx-selection-bar: #4CAF50;
+    -fx-selection-bar-non-focused: #a0d6a0;
+}
+
+/* 分割线 */
+.separator {
+    -fx-background-color: #e0e0e0;
+    -fx-padding: 2;
+}
+
+/* 内嵌内容区 */
+.content-pane {
+    -fx-background-color: white;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 20;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.08) , 6,0,0,2 );
+}
+
+/* ==============================
+   登录页专用样式
+   ============================== */
+.login-box {
+    -fx-background-color: white;
+    -fx-padding: 30;
+    -fx-spacing: 15;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.15) , 15,0,0,5 );
+}
+
+.login-box .text-field, .login-box .password-field {
+    -fx-font-size: 14px;
+    -fx-padding: 10 14;
+}
+
+#loginBtn {
+    -fx-background-color: linear-gradient(#4CAF50, #43A047);
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+}
+
+#loginBtn:hover {
+    -fx-background-color: linear-gradient(#43A047, #4CAF50);
+}
+
+/* ==============================
+   Dashboard 左侧菜单
+   ============================== */
+.menu-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: #e0e0e0;
+    -fx-padding: 15;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+}
+
+.menu-button:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Dashboard 主内容区 */
+.dashboard-content {
+    -fx-background-color: #fefefe;
+    -fx-padding: 20;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}

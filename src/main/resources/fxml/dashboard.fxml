@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ledgerfx.ui.controller.DashboardController"
+            prefWidth="1000" prefHeight="700">
+
+    <!-- 左侧导航 -->
+    <left>
+        <VBox spacing="8" styleClass="sidebar">
+            <Button fx:id="homeBtn" text="首页" styleClass="menu-button">
+                <graphic><FontIcon iconLiteral="mdi2h-home"/></graphic>
+            </Button>
+
+            <Button fx:id="addBtn" text="记账">
+                <graphic><FontIcon iconLiteral="mdi2c-cash-plus"/></graphic>
+            </Button>
+
+            <Button fx:id="analysisBtn" text="分析">
+                <graphic><FontIcon iconLiteral="mdi2c-chart-pie"/></graphic>
+            </Button>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button fx:id="logoutBtn" text="退出">
+                <graphic><FontIcon iconLiteral="mdi2l-logout"/></graphic>
+            </Button>
+        </VBox>
+    </left>
+
+    <!-- 主内容区 -->
+    <center>
+        <StackPane fx:id="contentPane" styleClass="content-pane">
+            <Label text="欢迎使用 LedgerFX 👋" styleClass="welcome-text"/>
+        </StackPane>
+    </center>
+
+</BorderPane>

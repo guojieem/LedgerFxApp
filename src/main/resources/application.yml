@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: LedgerFxApp
+  datasource:
+    url: jdbc:h2:file:./data/ledgerfx
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  #sql:
+  #  init:
+  #    mode: always
+  #    platform: h2
+  #    schema-locations: classpath:db/schema.sql
+  #    data-locations: classpath:db/data.sql
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: deleted       # \u903B\u8F91\u5220\u9664\u5B57\u6BB5\uFF08\u53EF\u9009\uFF09
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath:mapper/*.xml  # Mapper XML \u6587\u4EF6\u8DEF\u5F84
+  type-aliases-package: com.ledgerfx.entity  # \u5B9E\u4F53\u7C7B\u5305\u8DEF\u5F84
