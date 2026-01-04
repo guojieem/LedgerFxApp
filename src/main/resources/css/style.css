@@ -1,0 +1,89 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f0f2f5;
+}
+
+/* 标题 Label */
+.label.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4CAF50;
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-background-color: #409eff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.text-field, .combo-box, .date-picker {
+    -fx-pref-width: 150px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #dcdfe6;
+    -fx-border-width: 1px;
+}
+
+.table-view {
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+}
+
+.pie-chart {
+    -fx-pie-label-visible: true;
+    -fx-label-fill: #333333;
+    -fx-font-size: 14px;
+}
+
+.line-chart .chart-series-line {
+    -fx-stroke-width: 2px;
+}
+
+/* -----------------------------
+   登录页专用样式
+   ----------------------------- */
+.login-box {
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.15) , 15,0,0,5 );
+}
+
+.login-box .text-field, .login-box .password-field {
+    -fx-font-size: 14px;
+    -fx-padding: 10 14;
+}
+
+.loginBtn {
+    -fx-background-color: linear-gradient(#4CAF50, #43A047);
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+}
+
+.loginBtn:hover {
+    -fx-background-color: linear-gradient(#43A047, #4CAF50);
+}
+
+.icon-button {
+    -fx-background-color: #409eff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5 10 5 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+.icon-button .font-icon {
+    -fx-fill: white;
+    -fx-font-size: 16px;
+}

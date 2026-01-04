@@ -1,0 +1,44 @@
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ledgerfx.ui.controller.BillAnalysisController"
+            stylesheets="@/css/style.css">
+
+    <top>
+        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+            <DatePicker fx:id="startDatePicker" promptText="开始日期"/>
+            <DatePicker fx:id="endDatePicker" promptText="结束日期"/>
+            <ComboBox fx:id="categoryComboBox" promptText="分类"/>
+            <Button text="筛选" onAction="#handleFilter"/>
+            <Region HBox.hgrow="ALWAYS"/> <!-- 分隔符，右侧控件靠右 -->
+            <!-- 返回按钮，带 Ikonli 图标 -->
+            <Button onAction="#handleBackToBill" text="返回账单" styleClass="icon-button"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane>
+            <Tab text="分类统计">
+                <PieChart fx:id="categoryChart"/>
+            </Tab>
+            <Tab text="趋势分析">
+                <LineChart fx:id="trendChart"
+                           xmlns:fx="http://javafx.com/javafx/8.0.171"
+                           xmlns="http://javafx.com/javafx/8.0.171">
+                    <xAxis>
+                        <CategoryAxis fx:id="xAxis"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis"/>
+                    </yAxis>
+                </LineChart>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

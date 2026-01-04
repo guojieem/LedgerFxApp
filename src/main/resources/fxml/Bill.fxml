@@ -1,0 +1,36 @@
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ledgerfx.ui.controller.BillController"
+            stylesheets="@/css/style.css">
+
+    <top>
+        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+            <ComboBox fx:id="categoryComboBox" promptText="分类"/>
+            <TextField fx:id="amountField" promptText="金额"/>
+            <TextField fx:id="noteField" promptText="备注"/>
+            <Button text="添加账单" onAction="#handleAddBill"/>
+            <Button text="分析账单" onAction="#handleGoAnalysis"/>
+            <Button text="导出 CSV" onAction="#handleExportCsv"/>
+            <Region HBox.hgrow="ALWAYS"/> <!-- 分隔符，右侧控件靠右 -->
+            <!-- 退出按钮 -->
+            <Button onAction="#handleExit" text="退出" styleClass="icon-button"/>
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="billTable">
+            <columns>
+                <TableColumn text="分类" fx:id="categoryCol"/>
+                <TableColumn text="金额" fx:id="amountCol"/>
+                <TableColumn text="备注" fx:id="noteCol"/>
+                <TableColumn text="时间" fx:id="timeCol"/>
+            </columns>
+        </TableView>
+    </center>
+    <right>
+        <PieChart fx:id="categoryChart"/>
+    </right>
+</BorderPane>

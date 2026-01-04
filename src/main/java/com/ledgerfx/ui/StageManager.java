@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-    public final class StageManager {
+public final class StageManager {
 
     @Getter
     private static Stage primaryStage;
@@ -31,11 +31,7 @@ import java.util.Optional;
        全局样式
        ===================== */
 
-    private static final List<String> GLOBAL_STYLES = List.of(
-            "/styles/ledgerfx.css",
-            "/styles/base.css",
-            "/styles/theme.css"
-    );
+    private static final List<String> GLOBAL_STYLES = List.of("/css/style.css");
 
     private StageManager() {
     }
@@ -145,9 +141,7 @@ import java.util.Optional;
        ===================== */
 
     public static void showAlert(String title, String message) {
-        javafx.scene.control.Alert alert =
-                new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.initOwner(primaryStage);
         alert.setTitle(title);
         alert.setHeaderText(null);

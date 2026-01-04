@@ -5,11 +5,9 @@ import lombok.Getter;
 @Getter
 public enum FxmlView {
 
-    LOGIN("/fxml/login.fxml", "登录", 400, 350),
-    DASHBOARD("/fxml/dashboard.fxml", "Dashboard", 900, 600),
-    HOME("/fxml/home.fxml", "首页", 700, 500),
-    RECORD_BILL("/fxml/recordBill.fxml", "记账", 700, 500),
-    ANALYSIS("/fxml/analysis.fxml", "账单分析", 700, 500);
+    LOGIN("/fxml/Login.fxml", "登录", 400, 350),
+    BILL("/fxml/Bill.fxml", "账单", 900, 600),
+    ANALYSIS("/fxml/BillAnalysis.fxml", "账单分析", 900, 600);
 
     private final String fxml;
     private final String title;
