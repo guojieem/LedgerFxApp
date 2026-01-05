@@ -1,0 +1,22 @@
+<launch4jConfig>
+    <outfile>dist/LedgerFxApp.exe</outfile>
+
+    <!-- ⚠️ 关键修复：加 dist -->
+    <jar>dist/.app/LedgerFxApp-0.0.1.jar</jar>
+
+    <dontWrapJar>false</dontWrapJar>
+    <headerType>gui</headerType>
+    <chdir>.</chdir>
+
+    <icon>src/main/resources/icons/app.ico</icon>
+
+    <jre>
+        <path>jre</path>
+        <bundledJre64Bit>true</bundledJre64Bit>
+        <minVersion>17</minVersion>
+
+        <opt>-Dprism.order=sw</opt>
+        <opt>-Dprism.forceGPU=false</opt>
+        <opt>-Xmx512m</opt>
+    </jre>
+</launch4jConfig>

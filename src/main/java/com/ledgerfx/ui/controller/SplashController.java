@@ -30,4 +30,5 @@ public class SplashController extends BaseController {
         });
     }
 
+
 }

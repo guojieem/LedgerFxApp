@@ -16,9 +16,18 @@ public class LedgerFxApplication extends Application {
 
     private ConfigurableApplicationContext context;
 
+    static {
+        // 强制 JavaFX 使用软件渲染，避免 QuantumRenderer 问题
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.forceGPU", "false");
+        System.setProperty("prism.verbose", "true"); // 调试渲染管线
+    }
+
     @Override
     public void init() {
-        context = new SpringApplicationBuilder(LedgerFxApplication.class).run();
+        context = new SpringApplicationBuilder(LedgerFxApplication.class)
+                .headless(false)  // 必须 false，否则无法加载 FX
+                .run();
     }
 
     @Override
@@ -45,7 +54,8 @@ public class LedgerFxApplication extends Application {
 
     @Override
     public void stop() {
-        context.close();
+        if (context != null) context.close();
+        Platform.exit();
     }
 
     public static void main(String[] args) {
