@@ -51,24 +51,26 @@ public final class StageManager {
        ===================== */
 
     public static void show(FxmlView view) {
-        try {
-            FXMLLoader loader = createLoader(view.getFxml());
-            Parent root = loader.load();
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = createLoader(view.getFxml());
+                Parent root = loader.load();
 
-            Scene scene = new Scene(root, view.getWidth(), view.getHeight());
-            applyGlobalStyles(scene);
+                Scene scene = new Scene(root, view.getWidth(), view.getHeight());
+                applyGlobalStyles(scene);
 
-            primaryStage.setTitle(view.getTitle());
-            primaryStage.setScene(scene);
+                primaryStage.setTitle(view.getTitle());
+                primaryStage.setScene(scene);
 
-            autoCenter(primaryStage);
-            primaryStage.show();
+                autoCenter(primaryStage);
+                primaryStage.show();
 
-            callOnInit(loader.getController());
+                callOnInit(loader.getController());
 
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to show view: " + view, e);
-        }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to show view: " + view, e);
+            }
+        });
     }
 
     /* =====================

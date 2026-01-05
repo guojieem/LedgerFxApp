@@ -1,41 +1,98 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-REM =============== 配置 =================
+REM =====================================================
+REM LedgerFxApp - FULLY SELF-CONTAINED EXE (NO JAVA NEEDED)
+REM =====================================================
+
+echo.
+echo =========================================
+echo LedgerFxApp Native Windows Builder
+echo =========================================
+
+REM ----------------------------
+REM 【1】基础配置（必须修改）
+REM ----------------------------
+
+REM JDK 路径（必须是 JDK，不是 JRE）
 set JDK_HOME=C:\Program Files\java\jdk-17.0.16
+
+REM JavaFX SDK 路径
 set JAVAFX_HOME=C:\Program Files\javafx\javafx-sdk-20.0.2
 set JAVAFX_LIB=%JAVAFX_HOME%\lib
 
+REM 项目目录
 set PROJECT_DIR=%~dp0
 set TARGET_DIR=%PROJECT_DIR%target
 set DIST_DIR=%PROJECT_DIR%dist
 set RUNTIME_DIR=%PROJECT_DIR%runtime
 
+REM 应用信息
 set APP_NAME=LedgerFxApp
 set JAR_NAME=LedgerFxApp-0.0.1.jar
 set MAIN_CLASS=com.ledgerfx.LedgerFxApplication
 set ICON_PATH=%PROJECT_DIR%src\main\resources\icons\app.ico
 
-REM =============== 清理 =================
+REM ----------------------------
+REM 【2】环境检查
+REM ----------------------------
+
+if not exist "%JDK_HOME%\bin\jlink.exe" (
+    echo [ERROR] JDK not found: %JDK_HOME%
+    pause
+    exit /b 1
+)
+
+if not exist "%JAVAFX_LIB%" (
+    echo [ERROR] JavaFX not found: %JAVAFX_LIB%
+    pause
+    exit /b 1
+)
+
+REM ----------------------------
+REM 【3】清理
+REM ----------------------------
+
 rmdir /s /q "%DIST_DIR%" 2>nul
 rmdir /s /q "%RUNTIME_DIR%" 2>nul
 mkdir "%DIST_DIR%"
 
-REM =============== Maven 打包 =================
+REM ----------------------------
+REM 【4】Maven 打包
+REM ----------------------------
+
 call mvn clean package -Dmaven.test.skip=true
 if %ERRORLEVEL% NEQ 0 exit /b 1
 
-REM =============== jlink =================
+REM ----------------------------
+REM 【5】jlink：生成最小运行时
+REM ----------------------------
+
+echo Creating custom runtime...
+
 "%JDK_HOME%\bin\jlink" ^
 --module-path "%JDK_HOME%\jmods;%JAVAFX_LIB%" ^
 --add-modules ^
 java.base,java.desktop,java.logging,java.sql,java.naming,jdk.crypto.ec,^
 javafx.controls,javafx.fxml,javafx.graphics,javafx.swing ^
---strip-debug --no-header-files --no-man-pages --compress=2 ^
+--strip-debug ^
+--no-header-files ^
+--no-man-pages ^
+--compress=2 ^
 --output "%RUNTIME_DIR%"
-if %ERRORLEVEL% NEQ 0 exit /b 1
 
-REM =============== jpackage EXE =================
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] jlink failed
+    pause
+    exit /b 1
+)
+
+REM ----------------------------
+REM 【6】jpackage：生成 EXE（带 runtime）
+REM ----------------------------
+
+echo Packaging EXE...
+
 jpackage ^
 --name %APP_NAME% ^
 --input "%TARGET_DIR%" ^
@@ -53,7 +110,10 @@ jpackage ^
 --java-options "-Xmx512m --add-opens java.base/java.lang=ALL-UNNAMED" ^
 --verbose
 
-REM =============== jpackage MSI =================
+REM ----------------------------
+REM 【7】生成 MSI（可选）
+REM ----------------------------
+
 jpackage ^
 --name %APP_NAME% ^
 --input "%TARGET_DIR%" ^
@@ -72,6 +132,6 @@ jpackage ^
 echo.
 echo =========================================
 echo ✅ BUILD SUCCESS
-echo EXE/MSI generated in: %DIST_DIR%
+echo EXE/MSI in: %DIST_DIR%
 echo =========================================
 pause

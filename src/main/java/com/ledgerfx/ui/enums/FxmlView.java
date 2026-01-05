@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum FxmlView {
 
+    SPLASH("/fxml/Splash.fxml", "启动中", 900, 600),
     LOGIN("/fxml/Login.fxml", "登录", 400, 350),
     REGISTER("/fxml/Register.fxml", "注册", 400, 350),
     BILL("/fxml/Bill.fxml", "账单", 900, 600),
