@@ -9,12 +9,10 @@ LedgerFX 是一个基于 Spring Boot 3 + JavaFX 的现代桌面个人账本系�
 
 LedgerFX Controller 规范
 
-所有 Controller 必须继承 BaseController
+所有 Controller
 
 不允许直接 new Stage
 
 不允许跨 Controller 调用
 
 页面切换必须通过 StageManager
-
-生命周期逻辑只写在 onInit / onShow
