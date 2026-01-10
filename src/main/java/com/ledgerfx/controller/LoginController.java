@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @FXMLController
@@ -22,7 +23,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     @FXML

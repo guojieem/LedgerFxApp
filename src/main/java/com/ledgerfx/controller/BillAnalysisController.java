@@ -20,6 +20,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -52,9 +53,9 @@ public class BillAnalysisController {
     @FXML
     private NumberAxis yAxis;
 
-    @Resource
+    @Autowired
     private BillService billService;
-    @Resource
+    @Autowired
     private UserContext userContext;
 
     private User currentUser;

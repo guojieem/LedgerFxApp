@@ -11,7 +11,7 @@ spring:
     banner-mode: off
 
   datasource:
-    url: jdbc:h2:file:./data/ledgerfx
+    url: jdbc:h2:file:./ledgerfx
     driver-class-name: org.h2.Driver
     username: sa
     password:

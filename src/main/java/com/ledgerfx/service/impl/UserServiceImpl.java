@@ -10,12 +10,13 @@ import com.ledgerfx.mapper.UserMapper;
 import com.ledgerfx.service.UserService;
 import com.ledgerfx.util.PasswordEncoder;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    @Resource
+    @Autowired
     private UserContext userContext;
 
     @Override

@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.io.BufferedWriter;
@@ -58,9 +59,9 @@ public class BillController {
     @FXML
     private PieChart categoryChart;
 
-    @Resource
+    @Autowired
     private BillService billService;
-    @Resource
+    @Autowired
     private UserContext userContext;
 
     private User currentUser;

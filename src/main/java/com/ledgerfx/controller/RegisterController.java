@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @FXMLController
@@ -27,7 +28,7 @@ public class RegisterController {
     @FXML
     private Label errorLabel;
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     @FXML
