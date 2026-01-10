@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.ledgerfx.ui.controller.LoginController"
-           styleClass="root">
+           fx:controller="com.ledgerfx.controller.LoginController"
+           styleClass="root" prefWidth="900.0" prefHeight="600.0">
 
     <VBox alignment="CENTER" spacing="20">
         <Label text="💰 个人记账系统" styleClass="title"/>

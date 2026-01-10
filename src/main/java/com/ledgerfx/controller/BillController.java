@@ -1,13 +1,14 @@
-package com.ledgerfx.ui.controller;
+package com.ledgerfx.controller;
 
+import com.ledgerfx.LedgerFxApplication;
 import com.ledgerfx.context.UserContext;
 import com.ledgerfx.domain.Bill;
 import com.ledgerfx.domain.User;
 import com.ledgerfx.service.BillService;
-import com.ledgerfx.ui.StageManager;
-import com.ledgerfx.ui.base.BaseController;
-import com.ledgerfx.ui.enums.FxmlView;
+import com.ledgerfx.views.BillAnalysisView;
+import de.felixroske.jfxsupport.FXMLController;
 import jakarta.annotation.Resource;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
@@ -15,7 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.io.BufferedWriter;
@@ -30,8 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Component
-public class BillController extends BaseController {
+@Slf4j
+@FXMLController
+public class BillController {
 
     @FXML
     private ComboBox<String> categoryComboBox;
@@ -64,7 +66,7 @@ public class BillController extends BaseController {
     private User currentUser;
 
     @FXML
-    public void initialize() {
+    protected void initialize() {
         // 登录后注入当前用户
         this.currentUser = userContext.getCurrentUser();
         loadBills();
@@ -92,12 +94,12 @@ public class BillController extends BaseController {
     }
 
     @FXML
-    public void handleExit() {
+    protected void handleExit() {
         // 弹出确认框
-        if (confirm("您确定要退出应用吗？")) {
+        if (LedgerFxApplication.showConfirm("您确定要退出应用吗？")) {
             // 清理全局用户信息
             userContext.clear();
-            close();
+            Platform.exit();
         }
     }
 
@@ -125,22 +127,22 @@ public class BillController extends BaseController {
     }
 
     @FXML
-    public void handleAddBill() {
+    protected void handleAddBill() {
         String category = categoryComboBox.getValue();
         String amountStr = amountField.getText();
         String typeStr = typeComboBox.getValue();
         String note = noteField.getText();
 
         if (!StringUtils.hasLength(category)) {
-            error("请选择分类");
+            LedgerFxApplication.showAlert(Alert.AlertType.ERROR, "错误", "请选择分类");
             return;
         }
         if (!StringUtils.hasLength(amountStr)) {
-            error("请填入金额");
+            LedgerFxApplication.showAlert(Alert.AlertType.ERROR, "错误", "请填入金额");
             return;
         }
         if (!StringUtils.hasLength(typeStr)) {
-            error("请选择类型");
+            LedgerFxApplication.showAlert(Alert.AlertType.ERROR, "错误", "请选择类型");
             return;
         }
 
@@ -157,29 +159,29 @@ public class BillController extends BaseController {
             bill.setCreateTime(LocalDateTime.now());
 
             if (billService.addBill(bill)) {
-                info("账单添加成功");
+                LedgerFxApplication.showAlert(Alert.AlertType.INFORMATION, "提示", "账单添加成功");
                 loadBills();
                 amountField.clear();
                 noteField.clear();
             } else {
-                error("账单添加失败");
+                LedgerFxApplication.showAlert(Alert.AlertType.ERROR, "错误", "账单添加失败");
             }
         } catch (NumberFormatException e) {
-            error("金额格式不正确");
+            LedgerFxApplication.showAlert(Alert.AlertType.ERROR, "错误", "金额格式不正确");
         }
     }
 
     @FXML
-    public void handleGoAnalysis() throws IOException {
-        switchView(FxmlView.ANALYSIS);
+    protected void handleGoAnalysis() throws IOException {
+        LedgerFxApplication.showView(BillAnalysisView.class);
     }
 
     @FXML
-    public void handleExportCsv() {
+    protected void handleExportCsv() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("导出账单");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
-        File file = fileChooser.showSaveDialog(StageManager.getPrimaryStage());
+        File file = fileChooser.showSaveDialog(LedgerFxApplication.getStage());
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 writer.write("分类,金额,类型,备注,时间\n");
@@ -192,9 +194,9 @@ public class BillController extends BaseController {
                             b.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                     ));
                 }
-                info("账单已导出");
+                LedgerFxApplication.showAlert(Alert.AlertType.INFORMATION, "提示", "账单已导出");
             } catch (IOException e) {
-                error("导出失败");
+                LedgerFxApplication.showAlert(Alert.AlertType.WARNING, "警告", "导出失败");
             }
         }
     }

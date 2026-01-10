@@ -1,18 +1,20 @@
-package com.ledgerfx.ui.controller;
+package com.ledgerfx.controller;
 
+import com.ledgerfx.LedgerFxApplication;
 import com.ledgerfx.service.UserService;
-import com.ledgerfx.ui.base.BaseController;
-import com.ledgerfx.ui.enums.FxmlView;
+import com.ledgerfx.views.BillView;
+import com.ledgerfx.views.RegisterView;
+import de.felixroske.jfxsupport.FXMLController;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
-public class LoginController extends BaseController {
+@FXMLController
+public class LoginController {
 
     @FXML
     private TextField usernameField;
@@ -24,19 +26,19 @@ public class LoginController extends BaseController {
     private UserService userService;
 
     @FXML
-    public void handleLogin() {
+    protected void handleLogin() {
         boolean success = userService.login(usernameField.getText(), passwordField.getText());
         if (success) {
-            switchView(FxmlView.BILL);
+            LedgerFxApplication.showView(BillView.class);
         } else {
-            warn("用户名或密码错误");
+            LedgerFxApplication.showAlert(Alert.AlertType.ERROR, "错误", "用户名或密码错误");
         }
     }
 
     // ===================== 注册 =====================
     @FXML
-    private void handleRegister() {
-        switchView(FxmlView.REGISTER);
+    protected void handleRegister() {
+        LedgerFxApplication.showView(RegisterView.class);
     }
 }
 

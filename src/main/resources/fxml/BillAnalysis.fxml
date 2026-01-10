@@ -7,9 +7,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ledgerfx.ui.controller.BillAnalysisController"
+            fx:controller="com.ledgerfx.controller.BillAnalysisController"
             stylesheets="@/css/style.css">
-
     <top>
         <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
             <DatePicker fx:id="startDatePicker" promptText="开始日期"/>

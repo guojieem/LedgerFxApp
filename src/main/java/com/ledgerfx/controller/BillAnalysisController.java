@@ -1,12 +1,12 @@
-package com.ledgerfx.ui.controller;
+package com.ledgerfx.controller;
 
+import com.ledgerfx.LedgerFxApplication;
 import com.ledgerfx.context.UserContext;
 import com.ledgerfx.domain.Bill;
 import com.ledgerfx.domain.User;
 import com.ledgerfx.service.BillService;
-import com.ledgerfx.ui.StageManager;
-import com.ledgerfx.ui.base.BaseController;
-import com.ledgerfx.ui.enums.FxmlView;
+import com.ledgerfx.views.BillView;
+import de.felixroske.jfxsupport.FXMLController;
 import jakarta.annotation.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -32,8 +32,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-@Component
-public class BillAnalysisController extends BaseController {
+@Slf4j
+@FXMLController
+public class BillAnalysisController {
 
     @FXML
     private DatePicker startDatePicker;
@@ -59,7 +60,7 @@ public class BillAnalysisController extends BaseController {
     private User currentUser;
 
     @FXML
-    public void initialize() {
+    protected void initialize() {
         // 登录后注入当前用户
         this.currentUser = userContext.getCurrentUser();
         loadCharts();
@@ -67,8 +68,8 @@ public class BillAnalysisController extends BaseController {
     }
 
     @FXML
-    public void handleBackToBill() {
-        StageManager.switchScene(FxmlView.BILL);
+    protected void handleBackToBill() {
+        LedgerFxApplication.showView(BillView.class);
     }
 
     private void loadCategoryCombo() {
@@ -97,7 +98,7 @@ public class BillAnalysisController extends BaseController {
     }
 
     @FXML
-    public void handleFilter() {
+    protected void handleFilter() {
         LocalDate start = startDatePicker.getValue();
         LocalDate end = endDatePicker.getValue();
         String category = categoryComboBox.getValue();
@@ -130,7 +131,7 @@ public class BillAnalysisController extends BaseController {
     }
 
     @FXML
-    public void handleExportChart(Pane chartPane) {
+    protected void handleExportChart(Pane chartPane) {
         WritableImage image = chartPane.snapshot(new SnapshotParameters(), null);
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("导出图表");

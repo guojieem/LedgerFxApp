@@ -4,9 +4,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ledgerfx.ui.controller.BillController"
-            stylesheets="@/css/style.css">
-
+            fx:controller="com.ledgerfx.controller.BillController"
+            stylesheets="@/css/style.css" prefWidth="900" prefHeight="600">
     <top>
         <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
             <ComboBox fx:id="categoryComboBox" promptText="分类" maxWidth="100"/>

@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ledgerfx.ui.controller.RegisterController"
-            prefWidth="420" prefHeight="360">
+<?import javafx.scene.layout.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.ledgerfx.controller.RegisterController"
+           styleClass="root" prefWidth="400.0" prefHeight="350.0">
     <VBox spacing="15" alignment="CENTER" styleClass="login-box">
-        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+        <HBox spacing="15" alignment="CENTER" style="-fx-padding: 10;">
             <Label styleClass="title" text="登录名称:"/>
-            <TextField fx:id="usernameField" />
+            <TextField fx:id="usernameField"/>
         </HBox>
-        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+        <HBox spacing="15" alignment="CENTER" style="-fx-padding: 10;">
             <Label styleClass="title" text="密       码:"/>
-            <PasswordField fx:id="passwordField" />
+            <PasswordField fx:id="passwordField"/>
         </HBox>
-        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+        <HBox spacing="15" alignment="CENTER" style="-fx-padding: 10;">
             <Label styleClass="title" text="确认密码:"/>
-            <PasswordField fx:id="confirmPasswordField" />
+            <PasswordField fx:id="confirmPasswordField"/>
+        </HBox>
+        <Label fx:id="errorLabel" style="-fx-text-fill: red" />
+        <HBox layoutX="100" layoutY="250" spacing="15" alignment="CENTER" style="-fx-padding: 10;">
+            <Button text="注册" styleClass="loginBtn" onAction="#handleRegister"/>
+            <Button text="返回" styleClass="loginBtn" onAction="#handleBackToLogin"/>
         </HBox>
     </VBox>
-    <HBox layoutX="100" layoutY="250" spacing="15" alignment="CENTER" style="-fx-padding: 10;">
-        <Button text="注册" styleClass="loginBtn" onAction="#handleRegister"/>
-        <Button text="返回" styleClass="loginBtn" onAction="#handleBackToLogin"/>
-    </HBox>
-</AnchorPane>
+</StackPane>

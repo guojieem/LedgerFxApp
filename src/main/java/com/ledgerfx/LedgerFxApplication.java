@@ -1,65 +1,44 @@
 package com.ledgerfx;
 
-import com.ledgerfx.handler.FxExceptionHandler;
-import com.ledgerfx.ui.StageManager;
-import com.ledgerfx.ui.controller.SplashController;
-import com.ledgerfx.ui.enums.FxmlView;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
+import com.ledgerfx.config.CustomSplashScreen;
+import com.ledgerfx.views.LoginView;
+import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.Optional;
 
 @SpringBootApplication
-public class LedgerFxApplication extends Application {
-
-    private ConfigurableApplicationContext context;
-
-    static {
-        // 强制 JavaFX 使用软件渲染，避免 QuantumRenderer 问题
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.forceGPU", "false");
-        System.setProperty("prism.verbose", "true"); // 调试渲染管线
-    }
-
-    @Override
-    public void init() {
-        context = new SpringApplicationBuilder(LedgerFxApplication.class)
-                .headless(false)  // 必须 false，否则无法加载 FX
-                .run();
-    }
-
-    @Override
-    public void start(Stage stage) {
-        FxExceptionHandler.install();
-        // 初始化 StageManager（使用 Spring 容器）
-        StageManager.init(stage, context);
-        // 先显示 Splash
-        StageManager.switchScene(FxmlView.SPLASH);
-        // 模拟加载进度
-        SplashController splash = context.getBean(SplashController.class);
-        new Thread(() -> {
-            try {
-                for (int i = 1; i <= 100; i++) {
-                    Thread.sleep(15);  // 模拟初始化耗时
-                    splash.update(i / 100.0);
-                }
-                // 完成后切换登录页面
-                Platform.runLater(() -> StageManager.switchScene(FxmlView.LOGIN));
-            } catch (InterruptedException ignored) {
-            }
-        }).start();
-    }
-
-    @Override
-    public void stop() {
-        if (context != null) context.close();
-        Platform.exit();
-    }
+public class LedgerFxApplication extends AbstractJavaFxApplicationSupport {
 
     public static void main(String[] args) {
-        launch(args);
+        launch(LedgerFxApplication.class, LoginView.class, new CustomSplashScreen(), args);
     }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
+
+    public static void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.initOwner(LedgerFxApplication.getStage());
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public static boolean showConfirm(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("确认");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
 }
 

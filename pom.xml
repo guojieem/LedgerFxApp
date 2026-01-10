@@ -31,6 +31,25 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <!-- 必须: 配置元数据处理器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 必须: Spring Boot 与 JavaFX 集成支持库 -->
+        <dependency>
+            <groupId>de.roskenet</groupId>
+            <artifactId>springboot-javafx-support</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+
         <!-- MyBatis-Plus Spring Boot 3 Starter -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -63,35 +82,62 @@
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
         <!-- JavaFX Controls / FXML 已经有 -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-        <!-- Ikonli 核心库 -->
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-core</artifactId>
-            <version>${ikonli.version}</version>
-        </dependency>
-        <!-- Ikonli JavaFX UI组件库 -->
+
+        <!-- 可选: JavaFX Ikonli 图标显示支持 -->
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
-            <version>${ikonli.version}</version>
+            <version>12.4.0</version>
         </dependency>
-        <!-- Material Design 图标集包 (你也可以选择其他图标集，如 ikonli-fontawesome-pack) -->
+
+        <!-- 可选: JavaFX Feather 风格图标库 -->
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-materialdesign2-pack</artifactId>
-            <version>${ikonli.version}</version>
+            <artifactId>ikonli-feather-pack</artifactId>
+            <version>12.4.0</version>
         </dependency>
+
+        <!-- 可选: JavaFX Material2 图标库 -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-material2-pack</artifactId>
+            <version>12.4.0</version>
+        </dependency>
+
+        <!-- 可选: JavaFX CSS 加载工具-->
+        <dependency>
+            <groupId>fr.brouillard.oss</groupId>
+            <artifactId>cssfx</artifactId>
+            <version>11.5.1</version>
+        </dependency>
+
+        <!-- 可选: Java 原生接口访问库 -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.13.0</version>
+        </dependency>
+
+        <!-- 可选: Java 系统平台调用扩展库 -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.13.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -102,26 +148,124 @@
     <!-- ========================= -->
     <!-- 构建配置 -->
     <!-- ========================= -->
-    <!-- ⭐ JavaFX 启动插件（必须） -->
     <build>
         <plugins>
-            <!-- Spring Boot 可执行 jar -->
+
+            <!-- 编译 Java 源代码 -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.3.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.ledgerfx.LedgerFxApplication</mainClass>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <parameters>true</parameters>
                 </configuration>
             </plugin>
+
+            <!-- 打包生成普通 JAR 文件 -->
             <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
-                    <mainClass>com.ledgerfx.LedgerFxApplication</mainClass>
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
                 </configuration>
             </plugin>
+
+            <!-- 复制依赖到 lib 目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- jpackage 打包可执行文件 -->
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.6</version>
+                <configuration>
+                    <!-- 应用名称（安装程序和快捷方式显示） -->
+                    <name>LedgerFxApp</name>
+                    <!-- 应用版本号 -->
+                    <appVersion>1.0.0</appVersion>
+                    <!-- 开发商名称 -->
+                    <vendor>javafx Company</vendor>
+                    <!-- 版权信息 -->
+                    <copyright>Copyright 2026 javafx Company</copyright>
+                    <!-- 应用描述（在安装向导中显示）-->
+                    <description>JavaFX</description>
+
+                    <!-- 主类配置 -->
+                    <mainClass>com.ledgerfx.LedgerFxApplication</mainClass>
+                    <!-- 指定主 JAR 文件名 -->
+                    <mainJar>${project.build.finalName}.jar</mainJar>
+
+                    <!-- 图标配置 -->
+                    <icon>./src/main/resources/icons/app.ico</icon>
+
+                    <!-- 输出类型 -->
+                    <type>EXE</type>
+
+                    <!-- Windows 特定配置 -->
+                    <!-- 是否显示控制台窗口（JavaFX 应用设为 false） -->
+                    <winConsole>false</winConsole>
+                    <!-- 是否让用户选择安装目录 -->
+                    <winDirChooser>true</winDirChooser>
+                    <!-- 是否创建开始菜单项 -->
+                    <winMenu>true</winMenu>
+                    <!-- 开始菜单中的分组名称 -->
+                    <winMenuGroup>javafx Applications</winMenuGroup>
+                    <!-- 是否创建桌面快捷方式 -->
+                    <winShortcut>true</winShortcut>
+                    <!-- 是否为当前用户安装（true = 安装到 AppData，无需管理员权限）-->
+                    <winPerUserInstall>false</winPerUserInstall>
+
+                    <!-- 传递给 JVM 的启动参数 -->
+                    <javaOptions>
+                        <!-- 指定 JavaFX SDK 的 lib 路径（必须）-->
+                        <option>--module-path</option>
+                        <option>C:\Program Files\javafx\javafx-sdk-20.0.2\lib;C:\Program Files\javafx\javafx-jmods-20.0.2;</option>
+                        <!-- 显式加载 JavaFX 模块（必须） -->
+                        <option>--add-modules</option>
+                        <option>javafx.controls,javafx.fxml,javafx.graphics</option>
+                    </javaOptions>
+
+                    <!-- 输入目录（存放 JAR 文件位置） -->
+                    <input>${project.build.directory}/lib</input>
+                    <!-- 输出目录（生成 EXE 文件位置） -->
+                    <destination>${project.build.directory}/dist</destination>
+
+                    <!-- 是否输出详细日志-->
+                    <verbose>true</verbose>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jpackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

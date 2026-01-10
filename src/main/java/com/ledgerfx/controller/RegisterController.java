@@ -1,17 +1,19 @@
-package com.ledgerfx.ui.controller;
+package com.ledgerfx.controller;
 
+import com.ledgerfx.LedgerFxApplication;
 import com.ledgerfx.service.UserService;
-import com.ledgerfx.ui.base.BaseController;
-import com.ledgerfx.ui.enums.FxmlView;
+import com.ledgerfx.views.LoginView;
+import de.felixroske.jfxsupport.FXMLController;
 import jakarta.annotation.Resource;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
-public class RegisterController extends BaseController {
+@Slf4j
+@FXMLController
+public class RegisterController {
 
     @FXML
     private TextField usernameField;
@@ -29,18 +31,18 @@ public class RegisterController extends BaseController {
     private UserService userService;
 
     @FXML
-    private void handleRegister() {
+    protected void handleRegister() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         String confirm = confirmPasswordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            error("所有字段必须填写");
+            errorLabel.setText("所有字段必须填写");
             return;
         }
 
         if (!password.equals(confirm)) {
-            error("两次密码不一致");
+            errorLabel.setText("两次密码不一致");
             return;
         }
 
@@ -48,15 +50,15 @@ public class RegisterController extends BaseController {
         boolean flag = userService.register(username, password);
 
         if (flag) {
-            info("注册成功，跳转登录");
-            switchView(FxmlView.LOGIN);
+            errorLabel.setText("注册成功，跳转登录");
+            LedgerFxApplication.showView(LoginView.class);
         } else {
-            warn("用户名已存在");
+            errorLabel.setText("用户名已存在");
         }
     }
 
     @FXML
-    public void handleBackToLogin() {
-        switchView(FxmlView.LOGIN);
+    protected void handleBackToLogin() {
+        LedgerFxApplication.showView(LoginView.class);
     }
 }

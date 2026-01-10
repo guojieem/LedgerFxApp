@@ -1,4 +1,4 @@
-package com.ledgerfx.ui.enums;
+package com.ledgerfx.enums;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
